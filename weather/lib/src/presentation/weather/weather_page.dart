@@ -75,10 +75,13 @@ class _WeatherPageState extends State<WeatherPage> {
             TextField(
               controller: controller,
               decoration: const InputDecoration(labelText: "Введите город"),
-              onSubmitted: (city) {
+              onSubmitted: (city) async {
                 if (city.isNotEmpty) {
                   _viewModel.loadWeatherFromCity(city);
-                  widget.citiesViewModel.addCity(city);
+                  final weather = await _viewModel.weatherStream.last;
+                  if (weather != null) {
+                    widget.citiesViewModel.addCity(city);
+                  }
                 }
               },
             ),
