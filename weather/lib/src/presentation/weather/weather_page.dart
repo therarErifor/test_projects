@@ -164,20 +164,6 @@ class _WeatherPageState extends State<WeatherPage> {
               onSubmitted: (cityName) async {
                 if (cityName.isNotEmpty) {
                   await _viewModel.loadWeatherFromCity(cityName);
-                  final weatherState = _viewModel.weatherStream.value;
-                  weatherState.when(
-                    loading: () {},
-                    error: (_) {},
-                    success: (weather) async {
-                      await widget.citiesViewModel.addCity(
-                        City(
-                          name: cityName,
-                          latitude: weather.city.latitude,
-                          longitude: weather.city.longitude,
-                        ),
-                      );
-                    },
-                  );
                 }
               },
             ),
@@ -191,11 +177,21 @@ class _WeatherPageState extends State<WeatherPage> {
                 return state?.when(
                       loading: () => const CircularProgressIndicator(),
                       success: (weather) {
-                        if (controller.value.text != weather.city.name) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) async {
+                          if (controller.value.text != weather.city.name) {
                             controller.text = weather.city.name;
-                          });
-                        }
+                          }
+                          if (controller.value.text == weather.city.name) {
+                            await widget.citiesViewModel.addCity(
+                              City(
+                                name: weather.city.name,
+                                latitude: weather.city.latitude,
+                                longitude: weather.city.longitude,
+                              ),
+                            );
+                          }
+                        });
+
                         return Column(
                           children: [
                             Text(

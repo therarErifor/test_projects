@@ -3,7 +3,7 @@ import 'entities/city.dart';
 import 'entities/weather.dart';
 
 abstract class WeatherRepository {
-  Future<Result<Weather>> fetchWeatherFromCity(String city);
+  Future<Result<City>> fetchGeoFromCityName(String city);
 
   Future<Result<Weather>> fetchWeatherFromGeo(City? city);
 

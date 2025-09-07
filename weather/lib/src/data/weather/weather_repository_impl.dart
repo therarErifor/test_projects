@@ -14,21 +14,12 @@ class WeatherRepositoryImp implements WeatherRepository {
     : _weatherDataSource = weatherDataSource;
 
   @override
-  Future<Result<Weather>> fetchWeatherFromCity(String city) async {
-    final result = await _weatherDataSource.fetchWeatherFromCity(city);
+  Future<Result<City>> fetchGeoFromCityName(String city) async {
+    final result = await _weatherDataSource.fetchGeoFromCityName(city);
 
     return result.fold(
       (dto) => Result.success(
-        Weather(
-          city: City(
-            name: city,
-            latitude: dto.latitude,
-            longitude: dto.longitude,
-          ),
-          temperature: dto.current.temperature_2m,
-          precipitation: dto.current.precipitation,
-          windSpeed: dto.current.wind_speed_10m,
-        ),
+        City(name: dto.name, latitude: dto.latitude, longitude: dto.longitude),
       ),
       (error) => Result.error(error),
     );
@@ -83,12 +74,12 @@ class WeatherRepositoryImp implements WeatherRepository {
   }
 
   @override
-  Future<bool> openAppSettings() async{
+  Future<bool> openAppSettings() async {
     return await _weatherDataSource.openAppSettings();
   }
 
   @override
-  Future<bool> openLocationSettings() async{
+  Future<bool> openLocationSettings() async {
     return await _weatherDataSource.openLocationSettings();
   }
 }

@@ -6,11 +6,12 @@ import 'package:weater/src/data/weather/weather_data_source/dto/city_from_geo_dt
 
 import '../../../core/geolocation_service.dart';
 import '../../../core/result.dart';
+import 'dto/city_dto.dart';
 import 'dto/city_results_dto.dart';
 import 'dto/weather_dto.dart';
 
 abstract class WeatherDataSource {
-  Future<Result<WeatherDto>> fetchWeatherFromCity(String city);
+  Future<Result<CityDto>> fetchGeoFromCityName(String city);
 
   Future<Result<WeatherDto>> fetchWeatherFromGeolocation(
     double? latitude,
@@ -26,7 +27,6 @@ abstract class WeatherDataSource {
 
   Future<bool> openLocationSettings();
 }
-
 
 const openMeteoApi =
     'https://api.open-meteo.com'; //for get weather from geolocation
@@ -55,30 +55,18 @@ class WeatherDatasourceImpl implements WeatherDataSource {
   static const Map<String, dynamic> cityFromGeoParams = {"format": "json"};
 
   @override
-  Future<Result<WeatherDto>> fetchWeatherFromCity(String city) async {
+  Future<Result<CityDto>> fetchGeoFromCityName(String city) async {
     try {
       final result = await _dioClient.get(
         '$geocodingOpenMeteo/v1/search',
         queryParameters: {...geoFromCityParams, 'name': city},
       );
-      if(result.data["results"] == null){
+      if (result.data["results"] == null) {
         throw NoCity();
       }
       final citiesDto = CityResultsDto.fromJson(result.data);
 
-      final latitude = citiesDto.results.first.latitude;
-      final longitude = citiesDto.results.first.longitude;
-
-      final weatherResult = await _dioClient.get(
-        '$openMeteoApi/v1/forecast',
-        queryParameters: {
-          ...weatherParams,
-          'latitude': latitude,
-          'longitude': longitude,
-        },
-      );
-
-      return Result.success(WeatherDto.fromJson(weatherResult.data));
+      return Result.success(citiesDto.results.first);
     } on DioException {
       return Result.error(NoConnection().message);
     } on NoCity {
