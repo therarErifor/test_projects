@@ -1,29 +1,41 @@
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:weater/src/presentation/saved_cities/cities_state.dart';
 
-import '../../domain/cities_storage.dart';
+import '../../domain/cities_repository.dart';
+import '../../domain/entities/city.dart';
 
+@singleton
 class CitiesViewModel {
-  final CitiesStorage _storage;
+  final CitiesRepository _citiesRepository;
 
-  CitiesViewModel(CitiesStorage citiesStorage) : _storage = citiesStorage;
+  CitiesViewModel(CitiesRepository citiesRepository)
+    : _citiesRepository = citiesRepository;
 
-  final _citiesSubject = BehaviorSubject<List<String>>.seeded([]);
+  final _stateSubject = BehaviorSubject<CitiesState>();
 
-  Stream<List<String>> get citiesStream => _citiesSubject.stream;
+  ValueStream<CitiesState> get citiesStream => _stateSubject.stream;
 
   Future<void> loadCities() async {
-    final cities = await _storage.getCities();
-    _citiesSubject.add(cities);
+    _stateSubject.add(const CitiesState.loading());
+    final cities = await _citiesRepository.getCities();
+    _stateSubject.add(CitiesState.success(cities));
   }
 
-
-
-  Future<void> addCity(String city) async {
-    await _storage.addCity(city);
+  Future<void> addCity(City city) async {
+    _stateSubject.add(const CitiesState.loading());
+    await _citiesRepository.addCity(city);
     await loadCities();
   }
 
-  void dispose() {
-    _citiesSubject.close();
+  Future<void> removeCity(String city) async {
+    await _citiesRepository.removeCity(city);
+    await loadCities();
+  }
+
+  Future<void> clearCities() async {
+    _stateSubject.add(const CitiesState.loading());
+    await _citiesRepository.clearCities();
+    _stateSubject.add(CitiesState.success([]));
   }
 }
