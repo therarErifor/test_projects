@@ -11,12 +11,6 @@ class GeolocationService {
     return position;
   }
 
-  Future<bool> hasPermissionsAsync() async {
-    var permissionStatus = await Geolocator.checkPermission();
-    return permissionStatus == LocationPermission.whileInUse ||
-        permissionStatus == LocationPermission.always;
-  }
-
   Future<bool> openAppSettings() async {
     return await Geolocator.openAppSettings();
   }
