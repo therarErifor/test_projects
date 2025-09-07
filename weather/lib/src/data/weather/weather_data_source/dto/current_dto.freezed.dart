@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CurrentDto {
 
- WeatherDto get current;
+ double get temperature_2m; double get precipitation; double get wind_speed_10m;
 /// Create a copy of CurrentDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CurrentDtoCopyWith<CurrentDto> get copyWith => _$CurrentDtoCopyWithImpl<Current
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentDto&&(identical(other.current, current) || other.current == current));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentDto&&(identical(other.temperature_2m, temperature_2m) || other.temperature_2m == temperature_2m)&&(identical(other.precipitation, precipitation) || other.precipitation == precipitation)&&(identical(other.wind_speed_10m, wind_speed_10m) || other.wind_speed_10m == wind_speed_10m));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,current);
+int get hashCode => Object.hash(runtimeType,temperature_2m,precipitation,wind_speed_10m);
 
 @override
 String toString() {
-  return 'CurrentDto(current: $current)';
+  return 'CurrentDto(temperature_2m: $temperature_2m, precipitation: $precipitation, wind_speed_10m: $wind_speed_10m)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $CurrentDtoCopyWith<$Res>  {
   factory $CurrentDtoCopyWith(CurrentDto value, $Res Function(CurrentDto) _then) = _$CurrentDtoCopyWithImpl;
 @useResult
 $Res call({
- WeatherDto current
+ double temperature_2m, double precipitation, double wind_speed_10m
 });
 
 
-$WeatherDtoCopyWith<$Res> get current;
+
 
 }
 /// @nodoc
@@ -65,22 +65,15 @@ class _$CurrentDtoCopyWithImpl<$Res>
 
 /// Create a copy of CurrentDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? current = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? temperature_2m = null,Object? precipitation = null,Object? wind_speed_10m = null,}) {
   return _then(_self.copyWith(
-current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
-as WeatherDto,
+temperature_2m: null == temperature_2m ? _self.temperature_2m : temperature_2m // ignore: cast_nullable_to_non_nullable
+as double,precipitation: null == precipitation ? _self.precipitation : precipitation // ignore: cast_nullable_to_non_nullable
+as double,wind_speed_10m: null == wind_speed_10m ? _self.wind_speed_10m : wind_speed_10m // ignore: cast_nullable_to_non_nullable
+as double,
   ));
 }
-/// Create a copy of CurrentDto
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$WeatherDtoCopyWith<$Res> get current {
-  
-  return $WeatherDtoCopyWith<$Res>(_self.current, (value) {
-    return _then(_self.copyWith(current: value));
-  });
-}
+
 }
 
 
@@ -162,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( WeatherDto current)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double temperature_2m,  double precipitation,  double wind_speed_10m)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CurrentDto() when $default != null:
-return $default(_that.current);case _:
+return $default(_that.temperature_2m,_that.precipitation,_that.wind_speed_10m);case _:
   return orElse();
 
 }
@@ -183,10 +176,10 @@ return $default(_that.current);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( WeatherDto current)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double temperature_2m,  double precipitation,  double wind_speed_10m)  $default,) {final _that = this;
 switch (_that) {
 case _CurrentDto():
-return $default(_that.current);case _:
+return $default(_that.temperature_2m,_that.precipitation,_that.wind_speed_10m);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +196,10 @@ return $default(_that.current);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( WeatherDto current)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double temperature_2m,  double precipitation,  double wind_speed_10m)?  $default,) {final _that = this;
 switch (_that) {
 case _CurrentDto() when $default != null:
-return $default(_that.current);case _:
+return $default(_that.temperature_2m,_that.precipitation,_that.wind_speed_10m);case _:
   return null;
 
 }
@@ -218,10 +211,12 @@ return $default(_that.current);case _:
 @JsonSerializable()
 
 class _CurrentDto implements CurrentDto {
-  const _CurrentDto({required this.current});
+  const _CurrentDto({required this.temperature_2m, required this.precipitation, required this.wind_speed_10m});
   factory _CurrentDto.fromJson(Map<String, dynamic> json) => _$CurrentDtoFromJson(json);
 
-@override final  WeatherDto current;
+@override final  double temperature_2m;
+@override final  double precipitation;
+@override final  double wind_speed_10m;
 
 /// Create a copy of CurrentDto
 /// with the given fields replaced by the non-null parameter values.
@@ -236,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentDto&&(identical(other.current, current) || other.current == current));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentDto&&(identical(other.temperature_2m, temperature_2m) || other.temperature_2m == temperature_2m)&&(identical(other.precipitation, precipitation) || other.precipitation == precipitation)&&(identical(other.wind_speed_10m, wind_speed_10m) || other.wind_speed_10m == wind_speed_10m));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,current);
+int get hashCode => Object.hash(runtimeType,temperature_2m,precipitation,wind_speed_10m);
 
 @override
 String toString() {
-  return 'CurrentDto(current: $current)';
+  return 'CurrentDto(temperature_2m: $temperature_2m, precipitation: $precipitation, wind_speed_10m: $wind_speed_10m)';
 }
 
 
@@ -256,11 +251,11 @@ abstract mixin class _$CurrentDtoCopyWith<$Res> implements $CurrentDtoCopyWith<$
   factory _$CurrentDtoCopyWith(_CurrentDto value, $Res Function(_CurrentDto) _then) = __$CurrentDtoCopyWithImpl;
 @override @useResult
 $Res call({
- WeatherDto current
+ double temperature_2m, double precipitation, double wind_speed_10m
 });
 
 
-@override $WeatherDtoCopyWith<$Res> get current;
+
 
 }
 /// @nodoc
@@ -273,23 +268,16 @@ class __$CurrentDtoCopyWithImpl<$Res>
 
 /// Create a copy of CurrentDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? current = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? temperature_2m = null,Object? precipitation = null,Object? wind_speed_10m = null,}) {
   return _then(_CurrentDto(
-current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
-as WeatherDto,
+temperature_2m: null == temperature_2m ? _self.temperature_2m : temperature_2m // ignore: cast_nullable_to_non_nullable
+as double,precipitation: null == precipitation ? _self.precipitation : precipitation // ignore: cast_nullable_to_non_nullable
+as double,wind_speed_10m: null == wind_speed_10m ? _self.wind_speed_10m : wind_speed_10m // ignore: cast_nullable_to_non_nullable
+as double,
   ));
 }
 
-/// Create a copy of CurrentDto
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$WeatherDtoCopyWith<$Res> get current {
-  
-  return $WeatherDtoCopyWith<$Res>(_self.current, (value) {
-    return _then(_self.copyWith(current: value));
-  });
-}
+
 }
 
 // dart format on

@@ -1,12 +1,10 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:weater/src/core/errors.dart';
 
 class GeolocationService {
-
   Future<Position?> getCurrentPositionAsync() async {
-    var hasPermission = await _requestPermissionsAndEnableServiceAsync();
-    if (!hasPermission) {
-      await requestPermissionsAsync();
-    }
+    await _requestPermissionsAndEnableServiceAsync();
+
     var position = await Geolocator.getLastKnownPosition();
     position ??= await Geolocator.getCurrentPosition();
 
@@ -19,10 +17,12 @@ class GeolocationService {
         permissionStatus == LocationPermission.always;
   }
 
-  Future<bool> requestPermissionsAsync() async {
-    var permissionStatus = await Geolocator.requestPermission();
-    return permissionStatus == LocationPermission.whileInUse ||
-        permissionStatus == LocationPermission.always;
+  Future<bool> openAppSettings() async {
+    return await Geolocator.openAppSettings();
+  }
+
+  Future<bool> openLocationSettings() async {
+    return await Geolocator.openLocationSettings();
   }
 
   Future<bool> _requestPermissionsAndEnableServiceAsync() async {
@@ -30,12 +30,12 @@ class GeolocationService {
       var permissionStatus = await Geolocator.checkPermission();
       if (permissionStatus == LocationPermission.denied ||
           permissionStatus == LocationPermission.deniedForever) {
-        return false;
+        throw LocationDenied();
       }
 
       var isServiceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!isServiceEnabled) {
-        return false;
+        throw NoGeolocation();
       }
 
       if (permissionStatus == LocationPermission.whileInUse ||
@@ -44,9 +44,12 @@ class GeolocationService {
       }
 
       permissionStatus = await Geolocator.requestPermission();
-      return
-        permissionStatus == LocationPermission.whileInUse ||
-            permissionStatus == LocationPermission.always;
+      return permissionStatus == LocationPermission.whileInUse ||
+          permissionStatus == LocationPermission.always;
+    } on LocationDenied {
+      rethrow;
+    } on NoGeolocation {
+      rethrow;
     } catch (error) {
       return false;
     }
